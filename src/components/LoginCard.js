@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { post } from '../config';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { login } from '../lib/api';
 
 export default function LoginCard({ toggle }) {
   const [loginObj, setLoginObj] = useState({ email: '', password: '' });
@@ -29,7 +30,7 @@ export default function LoginCard({ toggle }) {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const res = await post('/login', loginObj);
+      const res = await login(loginObj);
       console.log(res);
       setAccessToken(res.data.access_token);
       navigate('/');

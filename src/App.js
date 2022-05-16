@@ -14,10 +14,10 @@ import { Logo } from './Logo';
 import { Route, Routes } from 'react-router-dom';
 import Landing from './views/Landing';
 import Home from './layouts/Home';
-import Product from './views/Product';
 import ProtectedRoute from './components/ProtectedRoute';
 import Auth from './layouts/Auth';
 import CreateListing from './views/CreateListing';
+import Auction from './views/Auction';
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route path="/" element={<Landing />} />
           <Route path="product" element={<ProtectedRoute />}>
-            <Route path=":productId" element={<Product />} />
+            <Route path=":productId" element={<Auction />} />
           </Route>
           <Route path="create" element={<ProtectedRoute />}>
             <Route path="listing" element={<CreateListing />} />

@@ -1,15 +1,50 @@
-import { Box, HStack } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  HStack,
+  list,
+  Skeleton,
+  Spinner,
+  VStack,
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import ProductCard from '../components/ProductCard';
+import { getAllListings } from '../lib/api';
 
 export default function Landing() {
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [listings, setListings] = useState([]);
+  useEffect(() => {
+    const listingCall = async () => {
+      try {
+        const res = await getAllListings();
+        console.log('LISTINGS', res);
+        setListings(res.data.listings);
+      } catch (e) {
+        setErrorMsg(
+          e.response.data.msg || 'An error occured, please try again!'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+    listingCall();
+  }, []);
+
   return (
     <Box>
-      <HStack wrap="wrap" justifyContent="space-around">
-        <ProductCard id="1" />
-        <ProductCard id="2" />
-        <ProductCard id="3" />
-        <ProductCard id="4" />
-      </HStack>
+      {listings.length > 0 ? (
+        <HStack wrap="wrap" justifyContent="space-around">
+          {listings.map(listing => (
+            <ProductCard {...listing} key={listing._id} />
+          ))}
+        </HStack>
+      ) : (
+        <Center h="30vw">
+          <Spinner size={'xl'} />
+        </Center>
+      )}
     </Box>
   );
 }

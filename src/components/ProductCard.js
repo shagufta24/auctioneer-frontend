@@ -51,14 +51,25 @@ function Rating({ rating, numReviews }) {
   );
 }
 
-function ProductCard({ id }) {
+function ProductCard({
+  _id,
+  desc,
+  features,
+  max_cost,
+  name,
+  specs,
+  subtitle,
+  image,
+  isNew,
+  cost,
+}) {
   const navigate = useNavigate();
   return (
     <Flex
       p={50}
       alignItems="center"
       justifyContent="center"
-      onClick={() => navigate(`/product/${id}`)}
+      onClick={() => navigate(`/product/${_id}`)}
     >
       <Box
         bg={useColorModeValue('white', 'gray.800')}
@@ -71,7 +82,7 @@ function ProductCard({ id }) {
           cursor: 'pointer',
         }}
       >
-        {data.isNew && (
+        {isNew && (
           <Circle
             size="10px"
             position="absolute"
@@ -82,14 +93,14 @@ function ProductCard({ id }) {
         )}
 
         <Image
-          src={data.imageURL}
-          alt={`Picture of ${data.name}`}
+          src={image || data.imageURL}
+          alt={`Picture of ${name}`}
           roundedTop="lg"
         />
 
         <Box p="6">
           <Box d="flex" alignItems="baseline">
-            {data.isNew && (
+            {isNew && (
               <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="red">
                 New
               </Badge>
@@ -103,7 +114,7 @@ function ProductCard({ id }) {
               lineHeight="tight"
               isTruncated
             >
-              {data.name}
+              {name}
             </Box>
             <Tooltip
               label="Add to cart"
@@ -122,9 +133,9 @@ function ProductCard({ id }) {
             <Rating rating={data.rating} numReviews={data.numReviews} />
             <Box fontSize="2xl" color={useColorModeValue('gray.800', 'white')}>
               <Box as="span" color={'gray.600'} fontSize="lg">
-                £
+                $
               </Box>
-              {data.price.toFixed(2)}
+              {cost}
             </Box>
           </Flex>
         </Box>

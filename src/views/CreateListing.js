@@ -12,24 +12,77 @@ import {
   AvatarBadge,
   IconButton,
   Center,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  NumberInput,
+  NumberInputField,
+  NumberIncrementStepper,
+  NumberInputStepper,
+  NumberDecrementStepper,
+  Textarea,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+  VStack,
+  Text,
 } from '@chakra-ui/react';
-import { SmallCloseIcon } from '@chakra-ui/icons';
+import { CheckIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import ImageUploading from 'react-images-uploading';
 import { useState } from 'react';
+import FormData from 'form-data';
+import { post } from '../config';
+import { addListing } from '../lib/api';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateListing() {
   const [images, setImages] = useState([]);
   const [features, setFeatures] = useState([]);
-  const [details, setDetails] = useState([]);
+  const [specs, setSpecs] = useState('');
+  const [featureInput, setFeatureInput] = useState('');
+  const [itemName, setItemName] = useState('');
+  const [startingCost, setStartingCost] = useState(15);
+  const [subtitle, setSubtitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const navigate = useNavigate();
+  const [maxCost, setMaxCost] = useState(200);
+  const [loading, setLoading] = useState(false);
 
   const onChange = (imageList, addUpdateIndex) => {
     // data for submit
     console.log(imageList, addUpdateIndex);
     setImages(imageList);
   };
+
+  const onEnter = e => {
+    if (e.key === 'Enter') {
+      setFeatures([...features, e.target.value]);
+      setFeatureInput('');
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const res = await addListing(
+        itemName,
+        subtitle,
+        startingCost,
+        desc,
+        features,
+        specs,
+        images,
+        maxCost
+      );
+      console.log(res);
+      navigate('/');
+    } catch (e) {
+      setErrorMsg(e.response.data.msg);
+    }
+  };
   return (
     <Flex
-      minH={'100vh'}
       align={'center'}
       justify={'center'}
       bg={useColorModeValue('gray.50', 'gray.800')}
@@ -107,28 +160,119 @@ export default function CreateListing() {
             )}
           </ImageUploading>
         </FormControl>
-        <FormControl id="userName" isRequired>
+        <FormControl id="itemName" isRequired>
           <FormLabel>Item name</FormLabel>
           <Input
-            placeholder="UserName"
+            placeholder=""
             _placeholder={{ color: 'gray.500' }}
             type="text"
+            value={itemName}
+            onChange={e => setItemName(e.target.value)}
           />
         </FormControl>
-        <FormControl id="email" isRequired>
+        <FormControl id="startCost" isRequired>
           <FormLabel>Starting cost</FormLabel>
+          <NumberInput
+            defaultValue={15}
+            precision={2}
+            step={0.2}
+            onChange={e => setStartingCost(e)}
+          >
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                color="gray.300"
+                fontSize="1.2em"
+                children="$"
+              />
+              <NumberInputField pl={8} value={startingCost} />
+            </InputGroup>
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </FormControl>
+        <FormControl id="maxCost" isRequired>
+          <FormLabel>Maximum cost</FormLabel>
+          <NumberInput
+            defaultValue={200}
+            precision={2}
+            step={50}
+            onChange={e => setMaxCost(e)}
+          >
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                color="gray.300"
+                fontSize="1.2em"
+                children="$"
+              />
+              <NumberInputField pl={8} value={maxCost} />
+            </InputGroup>
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </FormControl>
+        <FormControl id="subtitle" isRequired>
+          <FormLabel>Subtitle</FormLabel>
           <Input
-            placeholder="your-email@example.com"
+            placeholder=""
             _placeholder={{ color: 'gray.500' }}
-            type="email"
+            onChange={e => setSubtitle(e.target.value)}
+            value={subtitle}
           />
         </FormControl>
-        <FormControl id="password" isRequired>
-          <FormLabel>Password</FormLabel>
-          <Input
-            placeholder="password"
+        <FormControl id="desc" isRequired>
+          <FormLabel>Description</FormLabel>
+          <Textarea
+            placeholder=""
             _placeholder={{ color: 'gray.500' }}
-            type="password"
+            onChange={e => setDesc(e.target.value)}
+            value={desc}
+          />
+        </FormControl>
+        <FormControl id="features" isRequired>
+          <FormLabel>Features</FormLabel>
+          <Input
+            placeholder=""
+            _placeholder={{ color: 'gray.500' }}
+            value={featureInput}
+            onKeyDown={onEnter}
+            onChange={e => setFeatureInput(e.target.value)}
+          />
+        </FormControl>
+        {features.length > 0 ? (
+          <HStack>
+            {features.map(item => (
+              <Tag
+                size="lg"
+                key={item}
+                borderRadius="md"
+                variant="subtle"
+                colorScheme="telegram"
+              >
+                <TagLabel>{item}</TagLabel>
+                <TagCloseButton
+                  onClick={() => {
+                    setFeatures(
+                      features.filter(stateItem => stateItem !== item)
+                    );
+                  }}
+                />
+              </Tag>
+            ))}
+          </HStack>
+        ) : null}
+        <FormControl id="spec" isRequired>
+          <FormLabel>Specifications</FormLabel>
+          <Textarea
+            placeholder="Example: title1:value1,title2,value2 ..."
+            _placeholder={{ color: 'gray.500' }}
+            value={specs}
+            onChange={e => setSpecs(e.target.value)}
           />
         </FormControl>
         <Stack spacing={6} direction={['column', 'row']}>
@@ -139,6 +283,7 @@ export default function CreateListing() {
             _hover={{
               bg: 'red.500',
             }}
+            isDisabled={loading}
           >
             Cancel
           </Button>
@@ -149,9 +294,16 @@ export default function CreateListing() {
             _hover={{
               bg: 'blue.500',
             }}
+            onClick={handleSubmit}
+            isLoading={loading}
           >
             Submit
           </Button>
+          {errorMsg ? (
+            <Text fontSize="sm" color="red.400" align="center">
+              {errorMsg}
+            </Text>
+          ) : null}
         </Stack>
       </Stack>
     </Flex>

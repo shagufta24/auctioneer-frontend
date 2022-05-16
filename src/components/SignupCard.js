@@ -19,9 +19,15 @@ import {
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { register } from '../lib/api';
+import { useNavigate } from 'react-router-dom';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function SignupCard({ toggle }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [_, setAccessToken] = useLocalStorage('accessToken', null);
+  const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState('');
 
   const [regObj, setRegObj] = useState({
     firstName: '',
@@ -32,9 +38,16 @@ export default function SignupCard({ toggle }) {
   });
 
   const handleSubmit = async () => {
-    console.log('Submitted', regObj);
-    const res = await register(regObj);
-    console.log(res);
+    try {
+      const res = await register(regObj);
+      console.log(res);
+      setAccessToken(res.data.access_token);
+      navigate('/');
+    } catch (e) {
+      setErrorMsg(e.response.data.msg || 'An error occured, please try again!');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -139,9 +152,15 @@ export default function SignupCard({ toggle }) {
                   bg: 'blue.500',
                 }}
                 onClick={handleSubmit}
+                isLoading={loading}
               >
                 Sign up
               </Button>
+              {errorMsg ? (
+                <Text fontSize="sm" color="red.400" align="center">
+                  {errorMsg}
+                </Text>
+              ) : null}
             </Stack>
             <Stack pt={6}>
               <Text align={'center'}>
