@@ -19,27 +19,64 @@ import {
   Spinner,
   Skeleton,
   Center,
+  FormControl,
+  InputGroup,
+  FormLabel,
+  NumberInput,
+  InputLeftElement,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { MdLocalShipping } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
-import { getListingById } from '../lib/api';
+import { useRecoilState } from 'recoil';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { getListingById, makeBid } from '../lib/api';
+import { authAtom } from '../recoil/auth/atom';
 
 export default function Auction() {
   const { productId } = useParams();
   const [details, setDetails] = useState();
   const [loading, setLoading] = useState(true);
+  const [bid, setBid] = useState('');
+  const [auth, _] = useRecoilState(authAtom);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [bidLoader, setBidLoader] = useState(false);
+  const [LSEmail, _1] = useLocalStorage('email', null);
 
   useEffect(() => {
     const getListingDetails = async () => {
       const res = await getListingById(productId);
       console.log(res.data);
       setDetails(res.data.listing);
+      setBid(res.data.listing.cost + 50);
       setLoading(false);
     };
     getListingDetails();
   }, []);
+
+  const fireBid = async () => {
+    const email = LSEmail;
+    setBidLoader(true);
+    if (bid <= details.cost + 50 && details.bids.length > 0) {
+      setErrorMsg('Bid must be atleast 50$ greater than current cost');
+      setBidLoader(false);
+      return;
+    }
+    try {
+      const res = await makeBid(productId, email, bid);
+      console.log(res);
+      window.location.reload(false);
+    } catch (e) {
+      setErrorMsg(e);
+    } finally {
+      setBidLoader(false);
+    }
+  };
   return (
     <Container maxW={'7xl'}>
       <SimpleGrid
@@ -80,10 +117,58 @@ export default function Auction() {
               fontSize={'2xl'}
               as="div"
             >
-              ${details ? details.cost : <Spinner size={'xs'} />} USD
+              Current highest bid: $
+              {details ? details.cost : <Spinner size={'xs'} />} USD
             </Text>
           </Box>
-
+          {details.status === 'open' ? (
+            <FormControl>
+              <FormLabel>Make bid</FormLabel>
+              <NumberInput
+                defaultValue={details ? details.cost + 50 : 100}
+                precision={2}
+                step={50}
+                min={details ? details.cost : 50}
+                onChange={e => setBid(e)}
+              >
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    color="gray.300"
+                    fontSize="1.2em"
+                    children="$"
+                  />
+                  <NumberInputField pl={8} value={bid} />
+                </InputGroup>
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </FormControl>
+          ) : (
+            <Text fontSize={'lg'} color="red.500" fontWeight={'bold'}>
+              SOLD!
+            </Text>
+          )}
+          <Button
+            bg={'blue.400'}
+            color={'white'}
+            w="full"
+            _hover={{
+              bg: 'blue.500',
+            }}
+            onClick={fireBid}
+            isLoading={bidLoader}
+            isDisabled={details.status === 'sold'}
+          >
+            Submit
+          </Button>
+          {errorMsg ? (
+            <Text fontSize="sm" color="red.400" align="center">
+              {errorMsg}
+            </Text>
+          ) : null}
           <Stack
             spacing={{ base: 4, sm: 6 }}
             direction={'column'}

@@ -18,6 +18,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Auth from './layouts/Auth';
 import CreateListing from './views/CreateListing';
 import Auction from './views/Auction';
+import UserListings from './views/UserListings';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="create" element={<ProtectedRoute />}>
             <Route path="listing" element={<CreateListing />} />
           </Route>
+          <Route path="/my-listings" element={<UserListings />} />
         </Route>
 
         <Route path="auth" element={<Auth />} />

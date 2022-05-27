@@ -16,9 +16,11 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import { post } from '../config';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { login } from '../lib/api';
+import { authAtom } from '../recoil/auth/atom';
 
 export default function LoginCard({ toggle }) {
   const [loginObj, setLoginObj] = useState({ email: '', password: '' });
@@ -26,6 +28,9 @@ export default function LoginCard({ toggle }) {
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
   const [_, setAccessToken] = useLocalStorage('accessToken', null);
+  const [auth, setAuth] = useRecoilState(authAtom);
+  const [_1, setEmail] = useLocalStorage('email', null);
+  const [_2, setUserId] = useLocalStorage('userId', null);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -33,6 +38,9 @@ export default function LoginCard({ toggle }) {
       const res = await login(loginObj);
       console.log(res);
       setAccessToken(res.data.access_token);
+      setAuth(loginObj.email);
+      setEmail(loginObj.email);
+      setUserId(res.data.user);
       navigate('/');
     } catch (e) {
       setErrorMsg(e.response.data.msg || 'An error occured, please try again!');

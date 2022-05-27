@@ -43,3 +43,13 @@ export const getListingById = async id => {
   const res = await get(`/listing?id=${id}`);
   return res;
 };
+
+export const makeBid = async (id, email, amount) => {
+  const res = await post('/bid', { id, bid: { user: email, amount } });
+  return res;
+};
+
+export const getUserListings = async email => {
+  const res = await get(`/user/listings?email=${email}`);
+  return res;
+};

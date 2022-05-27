@@ -21,6 +21,7 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import logo from '../assets/logo.png';
 import logoDark from '../assets/logo-dark.png';
 import { Link, useNavigate } from 'react-router-dom';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const NavLink = ({ children, to, name }) => <Link to={to}>{name}</Link>;
 
@@ -28,6 +29,15 @@ export default function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const [email, setEmail] = useLocalStorage('email', null);
+  const [userId, setUserId] = useLocalStorage('userId', null);
+  const [accessToken, setAccessToken] = useLocalStorage('accessToken', null);
+  const logout = () => {
+    setEmail('');
+    setUserId('');
+    setAccessToken('');
+    navigate('/');
+  };
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -48,6 +58,12 @@ export default function Header() {
                 _hover={{ color: 'blue.700', transition: '0.2s ease-out' }}
               >
                 <NavLink to="/create/listing" name="SELL" />
+              </Box>
+              <Box
+                h="full"
+                _hover={{ color: 'blue.700', transition: '0.2s ease-out' }}
+              >
+                <NavLink to="/my-listings" name="HISTORY" />
               </Box>
             </HStack>
           </HStack>
@@ -81,13 +97,11 @@ export default function Header() {
                   </Center>
                   <br />
                   <Center>
-                    <p>Username</p>
+                    <p>{email}</p>
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem>Your Servers</MenuItem>
-                  <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={logout}>Logout</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>

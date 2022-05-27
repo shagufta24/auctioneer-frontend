@@ -28,6 +28,8 @@ export default function SignupCard({ toggle }) {
   const [_, setAccessToken] = useLocalStorage('accessToken', null);
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState('');
+  const [_1, setLSEmail] = useLocalStorage('email', null);
+  const [_2, setUserId] = useLocalStorage('userId', null);
 
   const [regObj, setRegObj] = useState({
     firstName: '',
@@ -42,6 +44,8 @@ export default function SignupCard({ toggle }) {
       const res = await register(regObj);
       console.log(res);
       setAccessToken(res.data.access_token);
+      setLSEmail(regObj.email);
+      setUserId(res.data.user);
       navigate('/');
     } catch (e) {
       setErrorMsg(e.response.data.msg || 'An error occured, please try again!');

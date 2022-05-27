@@ -8,10 +8,13 @@ import {
   Icon,
   chakra,
   Tooltip,
+  Text,
 } from '@chakra-ui/react';
+import { useEffect } from 'react';
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 import { FiShoppingCart } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const data = {
   isNew: true,
@@ -62,8 +65,12 @@ function ProductCard({
   image,
   isNew,
   cost,
+  status,
+  sold_to,
+  user,
 }) {
   const navigate = useNavigate();
+  const [thisUser, _] = useLocalStorage('userId', null);
   return (
     <Flex
       p={50}
@@ -116,17 +123,26 @@ function ProductCard({
             >
               {name}
             </Box>
-            <Tooltip
-              label="Add to cart"
-              bg="white"
-              placement={'top'}
-              color={'gray.800'}
-              fontSize={'1.2em'}
-            >
-              <chakra.a href={'#'} display={'flex'}>
-                <Icon as={FiShoppingCart} h={7} w={7} alignSelf={'center'} />
-              </chakra.a>
-            </Tooltip>
+            <Box alignContent={'center'}>
+              {status === 'sold' && sold_to === thisUser ? (
+                <Badge
+                  px="2"
+                  alignItems="center"
+                  fontSize="0.8em"
+                  colorScheme="green"
+                >
+                  BOUGHT!
+                </Badge>
+              ) : status === 'sold' ? (
+                <Badge px="2" fontSize="0.8em" colorScheme="red">
+                  SOLD!
+                </Badge>
+              ) : (
+                <Badge px="2" fontSize="0.8em" colorScheme="blue">
+                  ACTIVE
+                </Badge>
+              )}
+            </Box>
           </Flex>
 
           <Flex justifyContent="space-between" alignContent="center">

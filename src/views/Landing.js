@@ -34,10 +34,10 @@ export default function Landing() {
 
   return (
     <Box>
-      {listings.length > 0 ? (
+      {!loading ? (
         <HStack wrap="wrap" justifyContent="space-around">
           {listings.map(listing => (
-            <ProductCard {...listing} key={listing._id} />
+            <ProductCard {...listing} key={listing._id} user={false} />
           ))}
         </HStack>
       ) : (
