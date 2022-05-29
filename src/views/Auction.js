@@ -121,35 +121,39 @@ export default function Auction() {
               {details ? details.cost : <Spinner size={'xs'} />} USD
             </Text>
           </Box>
-          {details.status === 'open' ? (
-            <FormControl>
-              <FormLabel>Make bid</FormLabel>
-              <NumberInput
-                defaultValue={details ? details.cost + 50 : 100}
-                precision={2}
-                step={50}
-                min={details ? details.cost : 50}
-                onChange={e => setBid(e)}
-              >
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    color="gray.300"
-                    fontSize="1.2em"
-                    children="$"
-                  />
-                  <NumberInputField pl={8} value={bid} />
-                </InputGroup>
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
+          {details ? (
+            details.status === 'open' ? (
+              <FormControl>
+                <FormLabel>Make bid</FormLabel>
+                <NumberInput
+                  defaultValue={details ? details.cost + 50 : 100}
+                  precision={2}
+                  step={50}
+                  min={details ? details.cost : 50}
+                  onChange={e => setBid(e)}
+                >
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      color="gray.300"
+                      fontSize="1.2em"
+                      children="$"
+                    />
+                    <NumberInputField pl={8} value={bid} />
+                  </InputGroup>
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+            ) : (
+              <Text fontSize={'lg'} color="red.500" fontWeight={'bold'}>
+                SOLD!
+              </Text>
+            )
           ) : (
-            <Text fontSize={'lg'} color="red.500" fontWeight={'bold'}>
-              SOLD!
-            </Text>
+            <Spinner></Spinner>
           )}
           <Button
             bg={'blue.400'}
@@ -160,7 +164,7 @@ export default function Auction() {
             }}
             onClick={fireBid}
             isLoading={bidLoader}
-            isDisabled={details.status === 'sold'}
+            isDisabled={details ? details.status === 'sold' : false}
           >
             Submit
           </Button>
