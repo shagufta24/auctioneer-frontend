@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -16,12 +16,14 @@ import {
   Center,
   Image,
   HStack,
+  Spinner,
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import logo from '../assets/logo.png';
 import logoDark from '../assets/logo-dark.png';
 import { Link, useNavigate } from 'react-router-dom';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { getUser } from '../lib/api';
 
 const NavLink = ({ children, to, name }) => <Link to={to}>{name}</Link>;
 
@@ -32,12 +34,22 @@ export default function Header() {
   const [email, setEmail] = useLocalStorage('email', null);
   const [userId, setUserId] = useLocalStorage('userId', null);
   const [accessToken, setAccessToken] = useLocalStorage('accessToken', null);
+  const [headerUser, setHeaderUser] = useState('');
   const logout = () => {
     setEmail('');
     setUserId('');
     setAccessToken('');
+    setHeaderUser('');
     navigate('/');
   };
+  useEffect(() => {
+    const getUserData = async () => {
+      const user = await getUser(email).then(res => res.data.user);
+      console.log('USER', user);
+      setHeaderUser(user);
+    };
+    getUserData();
+  }, [email]);
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -47,7 +59,7 @@ export default function Header() {
               <Image src={colorMode === 'light' ? logo : logoDark} />
             </Box>
             <HStack
-              spacing={4}
+              spacing={6}
               display={{ base: 'none', md: 'flex' }}
               fontWeight="semibold"
               fontSize="lg"
@@ -57,13 +69,25 @@ export default function Header() {
                 h="full"
                 _hover={{ color: 'blue.700', transition: '0.2s ease-out' }}
               >
-                <NavLink to="/create/listing" name="SELL" />
+                <NavLink to="/" name="Buy" />
               </Box>
               <Box
                 h="full"
                 _hover={{ color: 'blue.700', transition: '0.2s ease-out' }}
               >
-                <NavLink to="/my-listings" name="HISTORY" />
+                <NavLink to="/create/listing" name="Sell" />
+              </Box>
+              <Box
+                h="full"
+                _hover={{ color: 'blue.700', transition: '0.2s ease-out' }}
+              >
+                <NavLink to="/my-listings" name="History" />
+              </Box>
+              <Box
+                h="full"
+                _hover={{ color: 'blue.700', transition: '0.2s ease-out' }}
+              >
+                <NavLink to="/about" name="About" />
               </Box>
             </HStack>
           </HStack>
@@ -82,22 +106,52 @@ export default function Header() {
                   cursor={'pointer'}
                   minW={0}
                 >
-                  <Avatar
-                    size={'sm'}
-                    src={'https://avatars.dicebear.com/api/male/username.svg'}
-                  />
+                  {headerUser ? (
+                    <Avatar
+                      size={'sm'}
+                      src={
+                        headerUser.gender === 'M'
+                          ? 'https://avatars.dicebear.com/api/male/username.svg'
+                          : 'https://avatars.dicebear.com/api/female/username.svg'
+                      }
+                    />
+                  ) : (
+                    <Avatar
+                      size={'sm'}
+                      src={
+                        'https://avatars.dicebear.com/api/jdenticon/abas.svg'
+                      }
+                    />
+                  )}
                 </MenuButton>
                 <MenuList alignItems={'center'}>
                   <br />
                   <Center>
-                    <Avatar
-                      size={'2xl'}
-                      src={'https://avatars.dicebear.com/api/male/username.svg'}
-                    />
+                    {headerUser ? (
+                      <Avatar
+                        size={'2xl'}
+                        src={
+                          headerUser.gender === 'M'
+                            ? 'https://avatars.dicebear.com/api/male/username.svg'
+                            : 'https://avatars.dicebear.com/api/female/username.svg'
+                        }
+                      />
+                    ) : (
+                      <Avatar
+                        size={'sm'}
+                        src={
+                          'https://avatars.dicebear.com/api/jdenticon/abas.svg'
+                        }
+                      />
+                    )}
                   </Center>
                   <br />
                   <Center>
-                    <p>{email}</p>
+                    {email ? (
+                      <p>Hello, {headerUser ? headerUser.first_name : ''}</p>
+                    ) : (
+                      <p>Please log in</p>
+                    )}
                   </Center>
                   <br />
                   <MenuDivider />

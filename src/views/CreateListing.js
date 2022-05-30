@@ -78,7 +78,10 @@ export default function CreateListing() {
       console.log(res);
       navigate('/');
     } catch (e) {
-      setErrorMsg(e.response.data.msg);
+      setLoading(false);
+      setErrorMsg(
+        e.response ? e.response.data.msg : 'Please fill the required fields'
+      );
     }
   };
   return (
@@ -177,13 +180,14 @@ export default function CreateListing() {
             precision={2}
             step={0.2}
             onChange={e => setStartingCost(e)}
+            min={15}
           >
             <InputGroup>
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"
                 fontSize="1.2em"
-                children="$"
+                children="₹"
               />
               <NumberInputField pl={8} value={startingCost} />
             </InputGroup>
@@ -200,13 +204,14 @@ export default function CreateListing() {
             precision={2}
             step={50}
             onChange={e => setMaxCost(e)}
+            min={startingCost + 500}
           >
             <InputGroup>
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"
                 fontSize="1.2em"
-                children="$"
+                children="₹"
               />
               <NumberInputField pl={8} value={maxCost} />
             </InputGroup>
@@ -299,12 +304,12 @@ export default function CreateListing() {
           >
             Submit
           </Button>
-          {errorMsg ? (
-            <Text fontSize="sm" color="red.400" align="center">
-              {errorMsg}
-            </Text>
-          ) : null}
         </Stack>
+        {errorMsg ? (
+          <Text fontSize="sm" color="red.400" align="center">
+            {errorMsg}
+          </Text>
+        ) : null}
       </Stack>
     </Flex>
   );

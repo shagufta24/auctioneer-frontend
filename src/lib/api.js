@@ -53,3 +53,8 @@ export const getUserListings = async email => {
   const res = await get(`/user/listings?email=${email}`);
   return res;
 };
+
+export const getUser = async email => {
+  const res = await get(`user?email=${email}`);
+  return res;
+};

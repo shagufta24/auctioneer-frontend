@@ -33,7 +33,7 @@ export default function Landing() {
   }, []);
 
   return (
-    <Box>
+    <Box mt={8}>
       {!loading ? (
         <HStack wrap="wrap" justifyContent="space-around">
           {listings.map(listing => (

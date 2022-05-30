@@ -40,6 +40,7 @@ import { authAtom } from '../recoil/auth/atom';
 
 export default function Auction() {
   const { productId } = useParams();
+  console.log('PIIID', productId);
   const [details, setDetails] = useState();
   const [loading, setLoading] = useState(true);
   const [bid, setBid] = useState('');
@@ -51,19 +52,19 @@ export default function Auction() {
   useEffect(() => {
     const getListingDetails = async () => {
       const res = await getListingById(productId);
-      console.log(res.data);
       setDetails(res.data.listing);
       setBid(res.data.listing.cost + 50);
       setLoading(false);
     };
+    console.log('UE');
     getListingDetails();
-  }, []);
+  }, [productId]);
 
   const fireBid = async () => {
     const email = LSEmail;
     setBidLoader(true);
     if (bid <= details.cost + 50 && details.bids.length > 0) {
-      setErrorMsg('Bid must be atleast 50$ greater than current cost');
+      setErrorMsg('Bid must be atleast 50₹ greater than current cost');
       setBidLoader(false);
       return;
     }
@@ -79,6 +80,7 @@ export default function Auction() {
   };
   return (
     <Container maxW={'7xl'}>
+      {console.log('DETAILS', details)}
       <SimpleGrid
         columns={{ base: 1, lg: 2 }}
         spacing={{ base: 8, md: 10 }}
@@ -117,8 +119,8 @@ export default function Auction() {
               fontSize={'2xl'}
               as="div"
             >
-              Current highest bid: $
-              {details ? details.cost : <Spinner size={'xs'} />} USD
+              Current highest bid: ₹
+              {details ? details.cost : <Spinner size={'xs'} />}
             </Text>
           </Box>
           {details ? (
@@ -137,7 +139,7 @@ export default function Auction() {
                       pointerEvents="none"
                       color="gray.300"
                       fontSize="1.2em"
-                      children="$"
+                      children="₹"
                     />
                     <NumberInputField pl={8} value={bid} />
                   </InputGroup>
@@ -153,7 +155,7 @@ export default function Auction() {
               </Text>
             )
           ) : (
-            <Spinner></Spinner>
+            <Spinner size={'xs'} />
           )}
           <Button
             bg={'blue.400'}

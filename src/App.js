@@ -19,12 +19,14 @@ import Auth from './layouts/Auth';
 import CreateListing from './views/CreateListing';
 import Auction from './views/Auction';
 import UserListings from './views/UserListings';
+import About from './views/About';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
       <Routes>
         <Route path="/" element={<Home />}>
+          <Route path="about" element={<About />} />
           <Route path="/" element={<Landing />} />
           <Route path="product" element={<ProtectedRoute />}>
             <Route path=":productId" element={<Auction />} />

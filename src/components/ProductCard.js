@@ -73,14 +73,15 @@ function ProductCard({
   const [thisUser, _] = useLocalStorage('userId', null);
   return (
     <Flex
-      p={50}
+      p={4}
       alignItems="center"
       justifyContent="center"
       onClick={() => navigate(`/product/${_id}`)}
     >
       <Box
         bg={useColorModeValue('white', 'gray.800')}
-        maxW="sm"
+        w="350px"
+        h="400px"
         borderWidth="1px"
         rounded="lg"
         shadow="lg"
@@ -103,6 +104,8 @@ function ProductCard({
           src={image || data.imageURL}
           alt={`Picture of ${name}`}
           roundedTop="lg"
+          h={'250px'}
+          w="full"
         />
 
         <Box p="6">
@@ -146,10 +149,13 @@ function ProductCard({
           </Flex>
 
           <Flex justifyContent="space-between" alignContent="center">
-            <Rating rating={data.rating} numReviews={data.numReviews} />
+            <Rating
+              rating={Math.random() * 5}
+              numReviews={Math.ceil(Math.random() * 100)}
+            />
             <Box fontSize="2xl" color={useColorModeValue('gray.800', 'white')}>
               <Box as="span" color={'gray.600'} fontSize="lg">
-                $
+                ₹
               </Box>
               {cost}
             </Box>
