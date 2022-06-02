@@ -62,6 +62,9 @@ function ProductCard({
   status,
   sold_to,
   user,
+  rating,
+  num_reviews,
+  created_by,
 }) {
   const navigate = useNavigate();
   const [thisUser, _] = useLocalStorage('userId', null);
@@ -134,6 +137,10 @@ function ProductCard({
                 <Badge px="2" fontSize="0.8em" colorScheme="red">
                   SOLD!
                 </Badge>
+              ) : status === 'expired' ? (
+                <Badge px="2" fontSize="0.8em" colorScheme="yellow">
+                  EXPIRED
+                </Badge>
               ) : (
                 <Badge px="2" fontSize="0.8em" colorScheme="blue">
                   ACTIVE
@@ -144,8 +151,8 @@ function ProductCard({
 
           <Flex justifyContent="space-between" alignContent="center">
             <Rating
-              rating={Math.random() * 5}
-              numReviews={Math.ceil(Math.random() * 100)}
+              rating={parseFloat(rating)}
+              numReviews={parseInt(num_reviews)}
             />
             <Box fontSize="2xl" color={useColorModeValue('gray.800', 'white')}>
               <Box as="span" color={'gray.600'} fontSize="lg">

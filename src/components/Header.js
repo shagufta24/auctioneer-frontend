@@ -20,11 +20,9 @@ import {
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import logo from '../assets/logo.png';
 import logoDark from '../assets/logo-dark.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { getUser } from '../lib/api';
-
-const NavLink = ({ children, to, name }) => <Link to={to}>{name}</Link>;
 
 export default function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -67,25 +65,71 @@ export default function Header() {
                 h="full"
                 _hover={{ color: 'blue.700', transition: '0.2s ease-out' }}
               >
-                <NavLink to="/" name="Buy" />
+                <NavLink
+                  to="/"
+                  name="Buy"
+                  style={({ isActive }) =>
+                    isActive ? { color: 'skyblue' } : undefined
+                  }
+                >
+                  Buy
+                </NavLink>
               </Box>
               <Box
                 h="full"
                 _hover={{ color: 'blue.700', transition: '0.2s ease-out' }}
               >
-                <NavLink to="/create/listing" name="Sell" />
+                <NavLink
+                  to="create/listing"
+                  name="Sell"
+                  style={({ isActive }) =>
+                    isActive ? { color: 'skyblue' } : undefined
+                  }
+                >
+                  Sell
+                </NavLink>
               </Box>
               <Box
                 h="full"
                 _hover={{ color: 'blue.700', transition: '0.2s ease-out' }}
               >
-                <NavLink to="/my-listings" name="History" />
+                <NavLink
+                  to="my-bids"
+                  name="My bids"
+                  style={({ isActive }) =>
+                    isActive ? { color: 'skyblue' } : undefined
+                  }
+                >
+                  My Bids
+                </NavLink>
               </Box>
               <Box
                 h="full"
                 _hover={{ color: 'blue.700', transition: '0.2s ease-out' }}
               >
-                <NavLink to="/about" name="About" />
+                <NavLink
+                  to="my-listings"
+                  name="My listings"
+                  style={({ isActive }) =>
+                    isActive ? { color: 'skyblue' } : undefined
+                  }
+                >
+                  My Listings
+                </NavLink>
+              </Box>
+              <Box
+                h="full"
+                _hover={{ color: 'blue.700', transition: '0.2s ease-out' }}
+              >
+                <NavLink
+                  to="about"
+                  name="About"
+                  style={({ isActive }) =>
+                    isActive ? { color: 'skyblue' } : undefined
+                  }
+                >
+                  About
+                </NavLink>
               </Box>
             </HStack>
           </HStack>

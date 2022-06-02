@@ -43,7 +43,7 @@ export default function Auction() {
   const [errorMsg, setErrorMsg] = useState('');
   const [bidLoader, setBidLoader] = useState(false);
   const [LSEmail, _1] = useLocalStorage('email', null);
-
+  const [thisUser, setThisUser] = useLocalStorage('userId', null);
   useEffect(() => {
     const getListingDetails = async () => {
       const res = await getListingById(productId);
@@ -59,7 +59,7 @@ export default function Auction() {
     const email = LSEmail;
     setBidLoader(true);
     if (bid <= details.cost + 50 && details.bids.length > 0) {
-      setErrorMsg('Bid must be atleast 50₹ greater than current cost');
+      setErrorMsg('Bid must be atleast ₹50 more than the current cost');
       setBidLoader(false);
       return;
     }
@@ -119,34 +119,44 @@ export default function Auction() {
             </Text>
           </Box>
           {details ? (
-            details.status === 'open' ? (
-              <FormControl>
-                <FormLabel>Make bid</FormLabel>
-                <NumberInput
-                  defaultValue={details ? details.cost + 50 : 100}
-                  precision={2}
-                  step={50}
-                  min={details ? details.cost : 50}
-                  onChange={e => setBid(e)}
-                >
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      color="gray.300"
-                      fontSize="1.2em"
-                      children="₹"
-                    />
-                    <NumberInputField pl={8} value={bid} />
-                  </InputGroup>
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
+            details.created_by !== thisUser ? (
+              details.status === 'open' ? (
+                <FormControl>
+                  <FormLabel>Make bid</FormLabel>
+                  <NumberInput
+                    defaultValue={details ? details.cost + 50 : 100}
+                    precision={2}
+                    step={50}
+                    min={details ? details.cost : 50}
+                    onChange={e => setBid(e)}
+                  >
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents="none"
+                        color="gray.300"
+                        fontSize="1.2em"
+                        children="₹"
+                      />
+                      <NumberInputField pl={8} value={bid} />
+                    </InputGroup>
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+              ) : details.status === 'sold' ? (
+                <Text fontSize={'lg'} color="red.500" fontWeight={'bold'}>
+                  SOLD!
+                </Text>
+              ) : (
+                <Text fontSize={'lg'} color="yellow.400" fontWeight={'bold'}>
+                  EXPIRED!
+                </Text>
+              )
             ) : (
-              <Text fontSize={'lg'} color="red.500" fontWeight={'bold'}>
-                SOLD!
+              <Text fontSize={'lg'} color="yellow.400" fontWeight={'bold'}>
+                You cannot bid on your own listing.
               </Text>
             )
           ) : (
@@ -161,7 +171,11 @@ export default function Auction() {
             }}
             onClick={fireBid}
             isLoading={bidLoader}
-            isDisabled={details ? details.status === 'sold' : false}
+            isDisabled={
+              details
+                ? details.status !== 'open' || details.created_by == thisUser
+                : false
+            }
           >
             Submit
           </Button>

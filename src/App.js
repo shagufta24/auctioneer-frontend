@@ -9,6 +9,7 @@ import CreateListing from './views/CreateListing';
 import Auction from './views/Auction';
 import UserListings from './views/UserListings';
 import About from './views/About';
+import MyListings from './views/MyListings';
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
           <Route path="create" element={<ProtectedRoute />}>
             <Route path="listing" element={<CreateListing />} />
           </Route>
-          <Route path="/my-listings" element={<UserListings />} />
+          <Route path="/my-bids" element={<UserListings />} />
+          <Route path="/my-listings" element={<MyListings />} />
         </Route>
 
         <Route path="auth" element={<Auth />} />

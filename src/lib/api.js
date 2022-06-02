@@ -13,7 +13,8 @@ export const addListing = async (
   features,
   specs,
   images,
-  maxCost
+  maxCost,
+  userId
 ) => {
   const requestObj = {
     name: itemName,
@@ -24,6 +25,7 @@ export const addListing = async (
     specs,
     max_cost: maxCost,
     image: images[0].data_url,
+    created_by: userId,
   };
   const res = await post('/listing', requestObj);
   return res;
@@ -56,5 +58,10 @@ export const getUserListings = async email => {
 
 export const getUser = async email => {
   const res = await get(`user?email=${email}`);
+  return res;
+};
+
+export const getMyListings = async id => {
+  const res = await get(`my-listings?user_id=${id}`);
   return res;
 };

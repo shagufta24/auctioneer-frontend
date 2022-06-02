@@ -31,6 +31,7 @@ import { useState } from 'react';
 
 import { addListing } from '../lib/api';
 import { useNavigate } from 'react-router-dom';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function CreateListing() {
   const [images, setImages] = useState([]);
@@ -45,6 +46,7 @@ export default function CreateListing() {
   const navigate = useNavigate();
   const [maxCost, setMaxCost] = useState(200);
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useLocalStorage('userId', null);
 
   const onChange = (imageList, addUpdateIndex) => {
     // data for submit
@@ -70,7 +72,8 @@ export default function CreateListing() {
         features,
         specs,
         images,
-        maxCost
+        maxCost,
+        userId
       );
       console.log(res);
       navigate('/');
