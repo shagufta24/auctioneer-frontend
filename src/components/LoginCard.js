@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Stack,
   Link,
   Button,
@@ -17,7 +16,6 @@ import {
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { post } from '../config';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { login } from '../lib/api';
 import { authAtom } from '../recoil/auth/atom';

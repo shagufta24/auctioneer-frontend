@@ -13,7 +13,6 @@ import {
   Text,
   useColorModeValue,
   Link,
-  Switch,
   Select,
 } from '@chakra-ui/react';
 import { useState } from 'react';

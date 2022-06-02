@@ -1,6 +1,5 @@
 import {
   Box,
-  chakra,
   Container,
   Stack,
   Text,
@@ -12,9 +11,6 @@ import {
   SimpleGrid,
   StackDivider,
   useColorModeValue,
-  VisuallyHidden,
-  List,
-  ListItem,
   HStack,
   Spinner,
   Skeleton,
@@ -30,7 +26,6 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { MdLocalShipping } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';

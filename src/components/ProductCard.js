@@ -5,14 +5,8 @@ import {
   Image,
   Badge,
   useColorModeValue,
-  Icon,
-  chakra,
-  Tooltip,
-  Text,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
-import { FiShoppingCart } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import useLocalStorage from '../hooks/useLocalStorage';
 

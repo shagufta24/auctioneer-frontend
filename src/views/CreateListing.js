@@ -14,7 +14,6 @@ import {
   Center,
   InputGroup,
   InputLeftElement,
-  InputRightElement,
   NumberInput,
   NumberInputField,
   NumberIncrementStepper,
@@ -24,14 +23,12 @@ import {
   Tag,
   TagLabel,
   TagCloseButton,
-  VStack,
   Text,
 } from '@chakra-ui/react';
-import { CheckIcon, SmallCloseIcon } from '@chakra-ui/icons';
+import { SmallCloseIcon } from '@chakra-ui/icons';
 import ImageUploading from 'react-images-uploading';
 import { useState } from 'react';
-import FormData from 'form-data';
-import { post } from '../config';
+
 import { addListing } from '../lib/api';
 import { useNavigate } from 'react-router-dom';
 

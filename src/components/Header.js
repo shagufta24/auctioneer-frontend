@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -16,7 +16,6 @@ import {
   Center,
   Image,
   HStack,
-  Spinner,
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import logo from '../assets/logo.png';
@@ -29,7 +28,6 @@ const NavLink = ({ children, to, name }) => <Link to={to}>{name}</Link>;
 
 export default function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const [email, setEmail] = useLocalStorage('email', null);
   const [userId, setUserId] = useLocalStorage('userId', null);
@@ -155,7 +153,13 @@ export default function Header() {
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem onClick={logout}>Logout</MenuItem>
+                  {!email ? (
+                    <MenuItem onClick={() => navigate('/auth')}>
+                      Log in
+                    </MenuItem>
+                  ) : (
+                    <MenuItem onClick={logout}>Logout</MenuItem>
+                  )}
                 </MenuList>
               </Menu>
             </Stack>
