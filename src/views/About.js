@@ -7,39 +7,28 @@ export default function About() {
         ABOUT
       </Text>
       <Text fontSize="md">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam erat eros,
-        egestas quis ante vel, gravida vulputate elit. Phasellus in ex eget
-        metus consequat accumsan. Vivamus sed nisi diam. Quisque ac lorem vel
-        velit pellentesque ornare. Vivamus imperdiet posuere semper. Phasellus
-        fermentum eleifend sem ut ornare. Curabitur et auctor purus, eget
-        euismod lorem. Suspendisse commodo rhoncus auctor. Aliquam erat
-        volutpat. Phasellus condimentum nisl vitae sem placerat, vitae
-        consectetur lacus facilisis.
+        Welcome to the Auctioneer, the most reliable online auction platform for
+        students. Let's get bidding ✌️
       </Text>
       <Text fontSize={'md'}>
-        Aliquam ac ex erat. Vestibulum suscipit purus at augue accumsan, eget
-        interdum est venenatis. In massa nunc, pulvinar vel magna imperdiet,
-        laoreet lobortis purus. Morbi pharetra euismod massa eget tincidunt.
-        Nulla id laoreet est. Phasellus pellentesque porta risus. Phasellus
-        laoreet ut est nec pellentesque. Ut eu scelerisque sem. Nulla finibus
-        interdum turpis ut iaculis. Aenean venenatis erat et felis vehicula, et
-        placerat ex dictum. Mauris venenatis turpis ipsum, vitae tempus ante
-        malesuada eu. Ut ante magna, congue eget leo nec, gravida tempus massa.
-        Duis semper finibus tortor porttitor sagittis.
+        With the rising reliance of the general populace on easy-to-access
+        applications to acccomplish their daily tasks, the resurgence of the old
+        fashioned practice of auctioning is inevitable. Auctioning may seem as a
+        relic of the past, but in this current atmosphere of electronic
+        property, coupled with aging tangible objects appreciating in their
+        value, auctioning may just be one of the most relevant practices right
+        now. That's where we come in. The Auctioneer provides you with a
+        user-friendly online auctioning platform, where you can buy, sell, bid
+        and view products with just the touch of a button. Biddings are updated
+        in real-time, and each user and/or product has an individual rating
+        score to gauge it's legibility and trust. All buying, selling and rating
+        can be achieved through a single user account, there's no need to make
+        seperate merchant and customer accounts for different purposes. Our
+        primary motive is to provide you with simplicity.
       </Text>
       <Text fontSize={'md'}>
-        Sed vel dolor egestas, egestas lectus vel, tempor eros. Maecenas vitae
-        velit ac dolor vehicula tempor. Nunc dignissim viverra ipsum quis
-        dictum. Vestibulum risus nisl, blandit sed arcu at, interdum blandit
-        leo. Pellentesque eget mi in nibh ullamcorper vulputate ut sit amet
-        nisl. Integer laoreet egestas sollicitudin. Suspendisse fermentum lorem
-        at nibh tristique bibendum. Pellentesque sed tortor lorem. Cras quis
-        imperdiet turpis, condimentum eleifend urna. Fusce nec justo justo.
-        Praesent malesuada id urna at posuere. Nullam finibus ac eros in
-        convallis. Curabitur magna erat, ornare eu lectus suscipit, blandit
-        dapibus mi. Fusce eleifend in neque in convallis. Morbi tincidunt nunc
-        in tristique lacinia. Quisque eu egestas ante. Mauris ultrices volutpat
-        magna nec molestie.
+        It's fast, it's free, and it gets the job done, just how you like it.
+        It's the Auctioneer.
       </Text>
     </Stack>
   );
