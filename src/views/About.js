@@ -19,16 +19,26 @@ export default function About() {
         value, auctioning may just be one of the most relevant practices right
         now. That's where we come in. The Auctioneer provides you with a
         user-friendly online auctioning platform, where you can buy, sell, bid
-        and view products with just the touch of a button. Biddings are updated
-        in real-time, and each user and/or product has an individual rating
-        score to gauge it's legibility and trust. All buying, selling and rating
-        can be achieved through a single user account, there's no need to make
-        seperate merchant and customer accounts for different purposes. Our
-        primary motive is to provide you with simplicity.
+        and view products with just the touch of a button.
       </Text>
       <Text fontSize={'md'}>
-        It's fast, it's free, and it gets the job done, just how you like it.
-        It's the Auctioneer.
+        Biddings are updated in real-time, and each user and/or product has an
+        individual rating score to gauge it's legibility and trust. Each product
+        can be bid for a maximum period of two hours after the first bid, after
+        which it ends up being sold to the highest bidder. Conversely, any
+        listing that stays stagnant with no bids made for it, ends up getting
+        expired, to prevent oversaturation of listings. Each listing can also be
+        customized to your preference, with a minimum and maximum price range,
+        multiple formats of descriptors, images, and specifications, and comma
+        seperated details section so that you don't have to take the hassle of
+        formatting your text. All buying, selling and rating can be achieved
+        through a single user account; there's no need to make seperate merchant
+        and customer accounts for different purposes.
+      </Text>
+      <Text fontSize={'md'}>
+        Our primary motive is to provide you with simplicity. And yes, we do
+        have a dark mode. It's fast, it's free, and it gets the job done, just
+        how you like it.It's the Auctioneer.
       </Text>
     </Stack>
   );
